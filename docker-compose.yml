@@ -1,0 +1,145 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    volumes:
+      - .:/workspace:cached
+    command: sleep infinity
+    networks: [ mp-net ]
+    depends_on:
+      - pg-general
+      - pg-mehmet
+      - pg-ali
+      - pg-zeynep
+      - pg-koray
+      - pg-aylin
+      - pg-emre
+      - pg-burak
+
+  pg-general:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: general, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-general-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+    ports: [ "5432:5432" ]
+
+  pg-mehmet:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: mehmet, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-mehmet-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+
+  pg-ali:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: ali, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-ali-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+
+  pg-zeynep:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: zeynep, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-zeynep-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+
+  pg-koray:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: koray, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-koray-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+    ports: [ "5434:5432" ]
+
+  pg-aylin:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: aylin, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-aylin-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+    ports: [ "5433:5432" ]
+
+  pg-emre:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: emre, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-emre-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+    ports: [ "5435:5432" ]
+
+  pg-burak:
+    image: postgres:16-alpine
+    environment: { POSTGRES_DB: burak, POSTGRES_USER: mp, POSTGRES_PASSWORD: mp_dev_pass }
+    volumes: [ pg-burak-data:/var/lib/postgresql/data ]
+    networks: [ mp-net ]
+
+  node-mehmet:
+    profiles: [ "nodes" ]
+    image: military-p2p
+    build: .
+    command: [ "mp-node-commander", "--db-url", "postgresql://mp:mp_dev_pass@pg-mehmet/mehmet", "serve", "--port", "8443" ]
+    environment: { RUST_LOG: info }
+    networks: [ mp-net ]
+    depends_on: [ pg-mehmet ]
+
+  node-ali:
+    profiles: [ "nodes" ]
+    image: military-p2p
+    build: .
+    command: [ "mp-node-commander", "--db-url", "postgresql://mp:mp_dev_pass@pg-ali/ali", "serve", "--port", "8443" ]
+    environment: { RUST_LOG: info }
+    networks: [ mp-net ]
+    depends_on: [ pg-ali ]
+
+  node-zeynep:
+    profiles: [ "nodes" ]
+    image: military-p2p
+    build: .
+    command: [ "mp-node-commander", "--db-url", "postgresql://mp:mp_dev_pass@pg-zeynep/zeynep", "serve", "--port", "8443" ]
+    environment: { RUST_LOG: info }
+    networks: [ mp-net ]
+    depends_on: [ pg-zeynep ]
+
+  node-koray:
+    profiles: [ "nodes" ]
+    image: military-p2p
+    command: [ "mp-node-commander", "--db-url", "postgresql://mp:mp_dev_pass@pg-koray/koray", "serve", "--port", "8443" ]
+    environment: { RUST_LOG: info }
+    networks: [ mp-net ]
+    depends_on: [ pg-koray ]
+
+  node-aylin:
+    profiles: [ "nodes" ]
+    image: military-p2p
+    build: .
+    command: [ "mp-node-commander", "--db-url", "postgresql://mp:mp_dev_pass@pg-aylin/aylin", "serve", "--port", "8443" ]
+    environment: { RUST_LOG: info }
+    networks: [ mp-net ]
+    depends_on: [ pg-aylin ]
+
+  node-emre:
+    profiles: [ "nodes" ]
+    image: military-p2p
+    build: .
+    command: [ "mp-node-commander", "--db-url", "postgresql://mp:mp_dev_pass@pg-emre/emre", "serve", "--port", "8443" ]
+    environment: { RUST_LOG: info }
+    networks: [ mp-net ]
+    depends_on: [ pg-emre ]
+
+  node-burak:
+    profiles: [ "nodes" ]
+    image: military-p2p
+    command: [ "mp-node-commander", "--db-url", "postgresql://mp:mp_dev_pass@pg-burak/burak", "serve", "--port", "8443" ]
+    environment: { RUST_LOG: info }
+    networks: [ mp-net ]
+    depends_on: [ pg-burak ]
+
+volumes:
+  pg-general-data:
+  pg-mehmet-data:
+  pg-ali-data:
+  pg-zeynep-data:
+  pg-koray-data:
+  pg-aylin-data:
+  pg-emre-data:
+  pg-burak-data:
+
+networks:
+  mp-net:
+    driver: bridge

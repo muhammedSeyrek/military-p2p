@@ -1,0 +1,27 @@
+[package]
+name = "mp-network"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+axum.workspace = true
+reqwest.workspace = true
+rustls.workspace = true
+tokio-rustls.workspace = true
+rcgen.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+uuid.workspace = true
+hex.workspace = true
+chrono.workspace = true
+mp-protocol.workspace = true
+mp-storage.workspace = true
+mp-crypto.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
+tracing-subscriber.workspace = true
+sqlx.workspace = true

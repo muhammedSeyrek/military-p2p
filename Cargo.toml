@@ -1,0 +1,66 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/mp-crypto",
+    "crates/mp-protocol",
+    "crates/mp-storage",
+    "crates/mp-network",
+    "crates/mp-node-general",
+    "crates/mp-node-commander",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "MIT"
+
+[workspace.dependencies]
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# Web framework + client
+axum = "0.7"
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+rustls = "0.23"
+tokio-rustls = "0.26"
+rcgen = "0.13"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Cryptography
+aes-gcm = "0.10"
+rsa = { version = "0.9", features = ["sha2"] }
+sha2 = "0.10"
+rand = "0.8"
+base64 = "0.22"
+hex = "0.4"
+
+# Database
+sqlx = { version = "0.8", features = ["runtime-tokio", "tls-rustls", "postgres", "uuid", "chrono", "macros"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Errors / logging
+thiserror = "1"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Config
+toml = "0.8"
+csv = "1"
+clap = { version = "4", features = ["derive", "env"] }
+
+# Internal crates
+mp-crypto = { path = "crates/mp-crypto" }
+mp-protocol = { path = "crates/mp-protocol" }
+mp-storage = { path = "crates/mp-storage" }
+mp-network = { path = "crates/mp-network" }
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
