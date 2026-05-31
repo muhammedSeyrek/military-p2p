@@ -37,3 +37,40 @@ For local testing and simulation, use the `demo.sh` script. This script manages 
 First, initialize the databases and load the commander configurations:
 ```bash
 vscode ➜ /workspace $ ./demo.sh setup
+
+
+Start the 7 commander servers in the background:
+
+Bash
+vscode ➜ /workspace $ ./demo.sh start
+Check the health status of all running nodes:
+
+Bash
+vscode ➜ /workspace $ ./demo.sh status
+Dispatch a test operation from the General HQ to the network:
+
+Bash
+vscode ➜ /workspace $ ./demo.sh dispatch
+Read the decrypted message fragment from a specific commander's perspective:
+
+Bash
+vscode ➜ /workspace $ ./demo.sh read aylin
+To run a complete, automated end-to-end test (including tampering detection):
+
+Bash
+vscode ➜ /workspace $ ./demo.sh full-demo
+Option B: Running Nodes via Docker Compose
+If you want to run the commander nodes purely via Docker (simulating a true distributed environment without local binary execution), the docker-compose.yml includes a specific nodes profile.
+
+To build the optimized release images and start all commander nodes (node-mehmet, node-ali, etc.):
+
+Bash
+vscode ➜ /workspace $ docker compose --profile nodes up --build -d
+To view the logs of the containerized nodes:
+
+Bash
+vscode ➜ /workspace $ docker compose --profile nodes logs -f
+To shut down the nodes and the databases:
+
+Bash
+vscode ➜ /workspace $ docker compose --profile nodes down
